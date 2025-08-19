@@ -9,6 +9,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:prettier/recommended',
     'plugin:@next/next/recommended',
+    'plugin:lingui/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -20,7 +21,7 @@ module.exports = {
     sourceType: 'module',
     tsconfigRootDir: __dirname,
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', 'lingui'],
   rules: {
     'react/react-in-jsx-scope': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
@@ -57,5 +58,55 @@ module.exports = {
       },
     ],
     'prettier/prettier': 'warn',
+    'lingui/no-unlocalized-strings': [
+      'error',
+      {
+        ignore: [
+          // Ignore strings which are a single "word" (no spaces)
+          // and doesn't start with an uppercase letter
+          '^(?![A-Z])\\S+$',
+          // Ignore UPPERCASE literals
+          // Example: const test = "FOO"
+          '^[A-Z0-9_-]+$',
+        ],
+        ignoreNames: [
+          // Ignore matching className (case-insensitive)
+          { regex: { pattern: 'className', flags: 'i' } },
+          // Ignore UPPERCASE names
+          // Example: test.FOO = "ola!"
+          { regex: { pattern: '^[A-Z0-9_-]+$' } },
+          'styleName',
+          'src',
+          'srcSet',
+          'type',
+          'id',
+          'width',
+          'height',
+          'displayName',
+          'Authorization',
+        ],
+        ignoreFunctions: [
+          'cva',
+          'cn',
+          'track',
+          'Error',
+          'console.*',
+          '*headers.set',
+          '*.addEventListener',
+          '*.removeEventListener',
+          '*.postMessage',
+          '*.getElementById',
+          '*.dispatch',
+          '*.commit',
+          '*.includes',
+          '*.indexOf',
+          '*.endsWith',
+          '*.startsWith',
+          'require',
+        ],
+        useTsTypes: true,
+        ignoreMethodsOnTypes: ['Map.get', 'Map.has', 'Set.has'],
+      },
+    ],
   },
 };
