@@ -9,6 +9,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:prettier/recommended',
     'plugin:@next/next/recommended',
+    // Make sure this is included
     'plugin:lingui/recommended',
   ],
   parser: '@typescript-eslint/parser',
@@ -16,13 +17,14 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    project: ['tsconfig.json'],
+    project: ['./tsconfig.json'],
     ecmaVersion: 'latest',
     sourceType: 'module',
     tsconfigRootDir: __dirname,
   },
   plugins: ['react', '@typescript-eslint', 'lingui'],
   rules: {
+    // ... your existing rules ...
     'react/react-in-jsx-scope': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     'jsx-a11y/click-events-have-key-events': 0,
@@ -58,55 +60,67 @@ module.exports = {
       },
     ],
     'prettier/prettier': 'warn',
+
+    // LINGUI RULES - This is the key part
     'lingui/no-unlocalized-strings': [
       'error',
       {
         ignore: [
-          // Ignore strings which are a single "word" (no spaces)
-          // and doesn't start with an uppercase letter
+          // Only ignore single words without spaces that don't start with uppercase
           '^(?![A-Z])\\S+$',
-          // Ignore UPPERCASE literals
-          // Example: const test = "FOO"
+          // Only ignore FULL UPPERCASE constants
           '^[A-Z0-9_-]+$',
         ],
         ignoreNames: [
-          // Ignore matching className (case-insensitive)
-          { regex: { pattern: 'className', flags: 'i' } },
-          // Ignore UPPERCASE names
-          // Example: test.FOO = "ola!"
-          { regex: { pattern: '^[A-Z0-9_-]+$' } },
+          // CSS related only
+          'className',
           'styleName',
+          // HTML attributes only
           'src',
           'srcSet',
           'type',
           'id',
           'width',
           'height',
+          'role',
+          'href',
+          'alt',
+          // Very specific technical attributes
           'displayName',
           'Authorization',
         ],
         ignoreFunctions: [
+          // Utility functions
           'cva',
           'cn',
-          'track',
-          'Error',
-          'console.*',
-          '*headers.set',
+          'clsx',
+          // Console only
+          'console.log',
+          'console.error',
+          'console.warn',
+          'console.info',
+          // Specific DOM methods
           '*.addEventListener',
           '*.removeEventListener',
-          '*.postMessage',
           '*.getElementById',
-          '*.dispatch',
-          '*.commit',
+          '*.querySelector',
+          // Array methods that typically use technical strings
           '*.includes',
           '*.indexOf',
           '*.endsWith',
           '*.startsWith',
+          // Build tools
           'require',
         ],
         useTsTypes: true,
         ignoreMethodsOnTypes: ['Map.get', 'Map.has', 'Set.has'],
       },
     ],
+
+    // Additional helpful Lingui rules
+    'lingui/no-single-variables-to-translate': 'warn',
+    'lingui/no-expression-in-message': 'warn',
+    'lingui/no-single-tag-to-translate': 'warn',
+    'lingui/t-call-in-function': 'error',
   },
 };

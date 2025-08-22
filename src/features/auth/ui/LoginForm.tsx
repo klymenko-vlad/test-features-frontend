@@ -12,6 +12,7 @@ import {
 } from '@/shared/ui/form';
 import { Input } from '@/shared/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Trans } from '@lingui/react/macro';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { z } from 'zod';
@@ -47,7 +48,9 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>
+                  <Trans>Email</Trans>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Your email" {...field} />
                 </FormControl>
@@ -60,7 +63,9 @@ export function LoginForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>
+                  <Trans>Password</Trans>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Your password" {...field} />
                 </FormControl>
@@ -69,7 +74,9 @@ export function LoginForm() {
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit">
+            <Trans>Submit</Trans>
+          </Button>
         </form>
       </Form>
       <Button
@@ -80,7 +87,7 @@ export function LoginForm() {
         }}
       >
         <FcGoogle className="w-5 h-5" />
-        Continue with Google
+        <Trans>Continue with Google</Trans>
       </Button>
     </div>
   );
